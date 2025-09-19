@@ -1,4 +1,4 @@
-# 位置情報マップ - GoogleMap位置情報表示アプリ
+# 座標表示アプリ
 
 GoogleMapを使ってクリックしたポイントの位置情報を様々な形式で表示するWebアプリケーションです。
 
@@ -67,9 +67,10 @@ locationInfo/
 ## 技術仕様
 
 ### 使用API
-- Google Maps JavaScript API
-- Google Places API (New) - オートコンプリート・検索機能用
-- Google Geocoding API - 住所取得用
+- Google APIキーでこれらを有効化してください
+  - Maps JavaScript API
+  - Geocoding API
+  - Places API (New)
 
 ### 対応測地系
 - WGS84（世界測地系）- GPS等で使用される国際標準
@@ -80,7 +81,7 @@ locationInfo/
 
 ## 注意事項
 
-- **Google Maps APIキーが必要です**
+- Google APIキーでこれらを有効化してください
   - Maps JavaScript API
   - Geocoding API
   - Places API (New)
