@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>座標表示アプリ</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 左側の情報パネル -->
+        <div class="info-panel">
+            <div class="resize-handle"></div>
+            <div class="header">
+                <h1>座標表示アプリ</h1>
+            </div>
+            
+            <div class="location-info">
+                <!-- 検索フォーム -->
+                <div class="info-section">
+                    <h3>場所検索</h3>
+                    <div class="map-controls">
+                        <button id="move-to-marker-button" disabled>マーカーの位置に移動</button>
+                    </div>
+                    <div class="search-form">
+                        <input type="text" id="search-input" placeholder="住所やキーワードを入力してください">
+                        <button id="search-button">検索</button>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>基本情報</h3>
+                    <div class="info-item">
+                        <label>郵便番号:</label>
+                        <span id="postal-code">-</span>
+                    </div>
+                    <div class="info-item">
+                        <label>住所:</label>
+                        <span id="address">-</span>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>座標情報</h3>
+                    <div class="coordinate-subsection">
+                        <h4>世界測地系 (WGS84)</h4>
+                        <div class="info-item">
+                            <label>度分秒:</label>
+                            <span id="wgs84-dms">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>度:</label>
+                            <span id="wgs84-decimal">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>ミリ秒:</label>
+                            <span id="wgs84-milliseconds">-</span>
+                        </div>
+                    </div>
+                    <div class="coordinate-subsection">
+                        <h4>日本測地系 (Tokyo97)</h4>
+                        <div class="info-item">
+                            <label>度分秒:</label>
+                            <span id="jgd2000-dms">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>度:</label>
+                            <span id="jgd2000-decimal">-</span>
+                        </div>
+                        <div class="info-item">
+                            <label>ミリ秒:</label>
+                            <span id="jgd2000-milliseconds">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="info-section">
+                    <h3>URL・リンク</h3>
+                    <div class="info-item">
+                        <label>Google Maps URL:</label>
+                        <a id="google-maps-url" href="#" target="_blank">-</a>
+                    </div>
+                    <div class="info-item">
+                        <label>OpenStreetMap URL:</label>
+                        <a id="osm-url" href="#" target="_blank">-</a>
+                    </div>
+                </div>
+                
+
+                <div class="api-key-section">
+                    <label for="api-key-input">Google Maps API キー:</label>
+                    <input type="password" id="api-key-input" placeholder="APIキーを入力してください">
+                    <div class="button-group">
+                        <button id="save-api-key">保存</button>
+                        <button id="delete-api-key">削除</button>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>ログ</h3>
+                    <div class="log-section">
+                        <div id="log-container"></div>
+                        <button id="clear-log">ログをクリア</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右側のGoogleMap -->
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
