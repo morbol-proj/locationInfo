@@ -416,9 +416,9 @@ function initializeAutocomplete() {
             if (selectedIndex >= 0 && selectedIndex < items.length) {
                 // 選択された候補を使用
                 selectSuggestion(suggestions[selectedIndex]);
-            } else if (suggestions.length > 0) {
+            // } else if (suggestions.length > 0) {
                 // 候補が表示されているが何も選択されていない場合は最上段を選択
-                selectSuggestion(suggestions[0]);
+                // selectSuggestion(suggestions[0]);
             } else {
                 // 候補がない場合は通常の検索を実行
                 performSearch();
