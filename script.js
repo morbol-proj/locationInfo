@@ -379,7 +379,7 @@ function initializeAutocomplete() {
     searchInput.addEventListener('input', function (e) {
         const query = e.target.value.trim();
 
-        if (query.length < 2) {
+        if (query.length < 1) {
             hideAutocomplete();
             return;
         }
