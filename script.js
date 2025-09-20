@@ -59,6 +59,15 @@ function setupEventListeners() {
     // マーカー移動ボタンのイベントリスナー
     moveToMarkerButton.addEventListener('click', moveToMarker);
 
+    // Ctrl+F キーボードショートカットで検索フォームをフォーカス
+    document.addEventListener('keydown', function (e) {
+        if (e.ctrlKey && e.key === 'f') {
+            e.preventDefault(); // ブラウザのデフォルト検索を無効化
+            searchInput.focus();
+            searchInput.select(); // テキストを選択状態にする
+        }
+    });
+
 }
 
 // ログ出力関数
@@ -416,9 +425,6 @@ function initializeAutocomplete() {
             if (selectedIndex >= 0 && selectedIndex < items.length) {
                 // 選択された候補を使用
                 selectSuggestion(suggestions[selectedIndex]);
-            // } else if (suggestions.length > 0) {
-                // 候補が表示されているが何も選択されていない場合は最上段を選択
-                // selectSuggestion(suggestions[0]);
             } else {
                 // 候補がない場合は通常の検索を実行
                 performSearch();
