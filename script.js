@@ -82,16 +82,16 @@ function setupEventListeners() {
 // コピー可能なテキストの設定
 function setupCopyableText() {
     document.querySelectorAll('.copyable-text').forEach(element => {
-        element.addEventListener('click', function() {
+        element.addEventListener('click', function () {
             selectText(this);
-            
+
             // クリップボードにコピーを試行
             const textToCopy = this.textContent.trim();
             if (textToCopy !== '-' && textToCopy !== '') {
                 navigator.clipboard.writeText(textToCopy).then(() => {
-                    addLog(`コピーしました: ${textToCopy}`, 'success');
+                    // コピー成功時の処理
                 }).catch(() => {
-                    addLog('テキストを選択しました。Ctrl+Cでコピーしてください', 'info');
+                    // コピー失敗時の処理
                 });
             }
         });
@@ -558,8 +558,6 @@ function initializeAutocomplete() {
                 // マップを移動
                 updateMapCenter({ lat: lat, lng: lng });
 
-                addLog(`場所を選択しました: ${placeDetails.displayName?.text || prediction.text?.text}`, 'success');
-
                 // 新しいセッショントークンを生成
                 currentSessionToken = generateSessionToken();
             } else {
@@ -803,7 +801,7 @@ function convertWGS84ToTokyo97(wgs84Lat, wgs84Lng) {
     // ユーザー提供の計算式:
     // 日本測地系の緯度 = 世界測地系の緯度 + 0.00010696 * 世界測地系の緯度 - 0.000017467 * 世界測地系の経度 - 0.004602
     // 日本測地系の経度 = 世界測地系の経度 + 0.000046047 * 世界測地系の緯度 + 0.000083049 * 世界測地系の経度 - 0.010041
-    
+
     const jgdLat = wgs84Lat + (0.00010696 * wgs84Lat) - (0.000017467 * wgs84Lng) - 0.004602;
     const jgdLng = wgs84Lng + (0.000046047 * wgs84Lat) + (0.000083049 * wgs84Lng) - 0.010041;
 
