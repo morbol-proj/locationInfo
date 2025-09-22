@@ -19,12 +19,18 @@ const postalCodeSpan = document.getElementById('postal-code');
 const addressSpan = document.getElementById('address');
 
 // 座標形式表示要素
-const wgs84DmsSpan = document.getElementById('wgs84-dms');
-const wgs84DecimalSpan = document.getElementById('wgs84-decimal');
-const wgs84MillisecondsSpan = document.getElementById('wgs84-milliseconds');
-const tokyo97DmsSpan = document.getElementById('tokyo97-dms');
-const tokyo97DecimalSpan = document.getElementById('tokyo97-decimal');
-const tokyo97MillisecondsSpan = document.getElementById('tokyo97-milliseconds');
+const wgs84DmsLatSpan = document.getElementById('wgs84-dms-lat');
+const wgs84DmsLngSpan = document.getElementById('wgs84-dms-lng');
+const wgs84DecimalLatSpan = document.getElementById('wgs84-decimal-lat');
+const wgs84DecimalLngSpan = document.getElementById('wgs84-decimal-lng');
+const wgs84MillisecondsLatSpan = document.getElementById('wgs84-milliseconds-lat');
+const wgs84MillisecondsLngSpan = document.getElementById('wgs84-milliseconds-lng');
+const tokyo97DmsLatSpan = document.getElementById('tokyo97-dms-lat');
+const tokyo97DmsLngSpan = document.getElementById('tokyo97-dms-lng');
+const tokyo97DecimalLatSpan = document.getElementById('tokyo97-decimal-lat');
+const tokyo97DecimalLngSpan = document.getElementById('tokyo97-decimal-lng');
+const tokyo97MillisecondsLatSpan = document.getElementById('tokyo97-milliseconds-lat');
+const tokyo97MillisecondsLngSpan = document.getElementById('tokyo97-milliseconds-lng');
 const googleMapsUrlLink = document.getElementById('google-maps-url');
 const osmUrlLink = document.getElementById('osm-url');
 
@@ -59,6 +65,9 @@ function setupEventListeners() {
     // マーカー移動ボタンのイベントリスナー
     moveToMarkerButton.addEventListener('click', moveToMarker);
 
+    // コピー可能なテキストのクリックイベント
+    setupCopyableText();
+
     // Ctrl+F キーボードショートカットで検索フォームをフォーカス
     document.addEventListener('keydown', function (e) {
         if (e.ctrlKey && e.key === 'f') {
@@ -68,6 +77,41 @@ function setupEventListeners() {
         }
     });
 
+}
+
+// コピー可能なテキストの設定
+function setupCopyableText() {
+    document.querySelectorAll('.copyable-text').forEach(element => {
+        element.addEventListener('click', function() {
+            selectText(this);
+            
+            // クリップボードにコピーを試行
+            const textToCopy = this.textContent.trim();
+            if (textToCopy !== '-' && textToCopy !== '') {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    addLog(`コピーしました: ${textToCopy}`, 'success');
+                }).catch(() => {
+                    addLog('テキストを選択しました。Ctrl+Cでコピーしてください', 'info');
+                });
+            }
+        });
+    });
+}
+
+// テキスト選択機能
+function selectText(element) {
+    if (window.getSelection && document.createRange) {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    } else if (document.body.createTextRange) {
+        // IE対応
+        const range = document.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+    }
 }
 
 // ログ出力関数
@@ -610,17 +654,25 @@ function moveToMarker() {
 // 位置情報の更新
 async function updateLocationInfo(lat, lng) {
     // WGS84（世界測地系）座標形式
-    const wgs84Dms = convertToDMS(lat, lng);
-    wgs84DmsSpan.textContent = wgs84Dms;
-    wgs84DecimalSpan.textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-    wgs84MillisecondsSpan.textContent = convertToMilliseconds(lat, lng);
+    const wgs84DmsLat = convertDecimalToDMS(lat, 'lat');
+    const wgs84DmsLng = convertDecimalToDMS(lng, 'lng');
+    wgs84DmsLatSpan.textContent = wgs84DmsLat;
+    wgs84DmsLngSpan.textContent = wgs84DmsLng;
+    wgs84DecimalLatSpan.textContent = lat.toFixed(6);
+    wgs84DecimalLngSpan.textContent = lng.toFixed(6);
+    wgs84MillisecondsLatSpan.textContent = Math.round(lat * 3600000);
+    wgs84MillisecondsLngSpan.textContent = Math.round(lng * 3600000);
 
     // Tokyo97（日本測地系）座標形式
     const tokyo97 = convertWGS84ToTokyo97(lat, lng);
-    const tokyo97Dms = convertToDMS(tokyo97.lat, tokyo97.lng);
-    tokyo97DmsSpan.textContent = tokyo97Dms;
-    tokyo97DecimalSpan.textContent = `${tokyo97.lat.toFixed(6)}, ${tokyo97.lng.toFixed(6)}`;
-    tokyo97MillisecondsSpan.textContent = convertToMilliseconds(tokyo97.lat, tokyo97.lng);
+    const tokyo97DmsLat = convertDecimalToDMS(tokyo97.lat, 'lat');
+    const tokyo97DmsLng = convertDecimalToDMS(tokyo97.lng, 'lng');
+    tokyo97DmsLatSpan.textContent = tokyo97DmsLat;
+    tokyo97DmsLngSpan.textContent = tokyo97DmsLng;
+    tokyo97DecimalLatSpan.textContent = tokyo97.lat.toFixed(6);
+    tokyo97DecimalLngSpan.textContent = tokyo97.lng.toFixed(6);
+    tokyo97MillisecondsLatSpan.textContent = Math.round(tokyo97.lat * 3600000);
+    tokyo97MillisecondsLngSpan.textContent = Math.round(tokyo97.lng * 3600000);
 
     // URLの更新
     updateUrls(lat, lng);

@@ -295,7 +295,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 10px;
     padding: 5px 0;
 }
 
@@ -492,4 +491,38 @@ body {
 
 #clear-log:hover {
     background-color: #777;
+}
+
+/* 座標フォーマット表示のスタイル */
+.coordinate-format {
+    margin-bottom: 15px;
+    padding: 8px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+}
+
+.coordinate-format h5 {
+    color: #6c757d;
+    margin: 0 0 8px 0;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 4px;
+}
+
+/* コピー可能なテキストのスタイル */
+.copyable-text {
+    cursor: pointer;
+    user-select: all;
+    padding: 2px 4px;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+    font-family: 'Courier New', monospace;
+}
+
+.copyable-text:hover {
+    background-color: #e3f2fd;
+    outline: 1px solid #2196f3;
 }
