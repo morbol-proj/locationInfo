@@ -22,9 +22,9 @@ const addressSpan = document.getElementById('address');
 const wgs84DmsSpan = document.getElementById('wgs84-dms');
 const wgs84DecimalSpan = document.getElementById('wgs84-decimal');
 const wgs84MillisecondsSpan = document.getElementById('wgs84-milliseconds');
-const jgd2000DmsSpan = document.getElementById('jgd2000-dms');
-const jgd2000DecimalSpan = document.getElementById('jgd2000-decimal');
-const jgd2000MillisecondsSpan = document.getElementById('jgd2000-milliseconds');
+const tokyo97DmsSpan = document.getElementById('tokyo97-dms');
+const tokyo97DecimalSpan = document.getElementById('tokyo97-decimal');
+const tokyo97MillisecondsSpan = document.getElementById('tokyo97-milliseconds');
 const googleMapsUrlLink = document.getElementById('google-maps-url');
 const osmUrlLink = document.getElementById('osm-url');
 
@@ -617,10 +617,10 @@ async function updateLocationInfo(lat, lng) {
 
     // Tokyo97（日本測地系）座標形式
     const tokyo97 = convertWGS84ToTokyo97(lat, lng);
-    const jgd2000Dms = convertToDMS(tokyo97.lat, tokyo97.lng);
-    jgd2000DmsSpan.textContent = jgd2000Dms;
-    jgd2000DecimalSpan.textContent = `${tokyo97.lat.toFixed(6)}, ${tokyo97.lng.toFixed(6)}`;
-    jgd2000MillisecondsSpan.textContent = convertToMilliseconds(tokyo97.lat, tokyo97.lng);
+    const tokyo97Dms = convertToDMS(tokyo97.lat, tokyo97.lng);
+    tokyo97DmsSpan.textContent = tokyo97Dms;
+    tokyo97DecimalSpan.textContent = `${tokyo97.lat.toFixed(6)}, ${tokyo97.lng.toFixed(6)}`;
+    tokyo97MillisecondsSpan.textContent = convertToMilliseconds(tokyo97.lat, tokyo97.lng);
 
     // URLの更新
     updateUrls(lat, lng);
@@ -746,26 +746,16 @@ function convertToMilliseconds(lat, lng) {
     return `${latMs}, ${lngMs}`;
 }
 
-// WGS84からTokyo97（日本測地系）への変換
-function convertWGS84ToTokyo97(lat, lng) {
-    // 楕円体パラメータ
-    const a = 6378137.0; // WGS84長半径
-    const f = 1 / 298.257223563; // WGS84扁平率
-    const a2 = 6377397.155; // Tokyo97長半径
-    const f2 = 1 / 299.152813; // Tokyo97扁平率
+// WGS84から日本測地系への変換（ユーザー提供の計算式）
+function convertWGS84ToTokyo97(wgs84Lat, wgs84Lng) {
+    // ユーザー提供の計算式:
+    // 日本測地系の緯度 = 世界測地系の緯度 + 0.00010696 * 世界測地系の緯度 - 0.000017467 * 世界測地系の経度 - 0.004602
+    // 日本測地系の経度 = 世界測地系の経度 + 0.000046047 * 世界測地系の緯度 + 0.000083049 * 世界測地系の経度 - 0.010041
+    
+    const jgdLat = wgs84Lat + (0.00010696 * wgs84Lat) - (0.000017467 * wgs84Lng) - 0.004602;
+    const jgdLng = wgs84Lng + (0.000046047 * wgs84Lat) + (0.000083049 * wgs84Lng) - 0.010041;
 
-    // 度をラジアンに変換
-    const latRad = lat * Math.PI / 180;
-    const lngRad = lng * Math.PI / 180;
-
-    // 緯度の変換（簡易版）
-    const deltaLat = -0.00010696 * Math.cos(latRad) - 0.000017464 * Math.sin(latRad);
-    const deltaLng = 0.000046038 * Math.cos(latRad) + 0.000083043 * Math.sin(latRad);
-
-    const tokyoLat = lat + deltaLat;
-    const tokyoLng = lng + deltaLng;
-
-    return { lat: tokyoLat, lng: tokyoLng };
+    return { lat: jgdLat, lng: jgdLng };
 }
 
 
