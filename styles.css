@@ -31,14 +31,12 @@ body {
 
 /* リサイズハンドル */
 .resize-handle {
-    position: absolute;
-    top: 0;
-    right: -5px;
-    width: 10px;
-    height: 100%;
+    width: 6px;
+    height: 100vh;
     cursor: col-resize;
     background: transparent;
     z-index: 10;
+    flex-shrink: 0;
 }
 
 .resize-handle:hover {
